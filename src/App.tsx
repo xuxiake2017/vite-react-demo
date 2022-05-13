@@ -75,6 +75,8 @@ const App: React.FC = (props) => {
         })
       }
       document.title = realRoute.title as string
+    } else {
+      document.title = '404 Not Found'
     }
   }, [location.pathname, routes])
   return <Fragment>
