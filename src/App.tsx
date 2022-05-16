@@ -9,6 +9,7 @@ import { pathToRegexp } from 'path-to-regexp';
 
 import RouteContext from '@/context/RouteContext';
 import PermissionContext from '@/context/PermissionContext';
+import { PAGE_NOT_FOUND_NAME, PAGE_NOT_FOUND_TITLE } from '@/routes/constant';
 
 import type { RouteItem } from '@/routes';
 
@@ -35,7 +36,7 @@ const getCurrentRoute = (pathname: string, routes: RouteItem[]): RouteItem[] => 
   let matchRoute: RouteItem[] = []
   for (let index = 0; index < routes.length; index++) {
     const route = routes[index];
-    if (route.name === 'Page404') continue
+    if (route.name === PAGE_NOT_FOUND_NAME) continue
     if (route.path) {
       const regexp = pathToRegexp(route.path);
       const res = regexp.exec(pathname)
@@ -59,6 +60,7 @@ const getCurrentRoute = (pathname: string, routes: RouteItem[]): RouteItem[] => 
 const App: React.FC = (props) => {
 
   const location = useLocation()
+  console.log(location);
   const navigate = useNavigate()
   const [currentRoute, setCurrentRoute] = useState<RouteItem[]>([])
   const { routes } = useContext(PermissionContext)
@@ -76,7 +78,7 @@ const App: React.FC = (props) => {
       }
       document.title = realRoute.title as string
     } else {
-      document.title = '404 Not Found'
+      document.title = PAGE_NOT_FOUND_TITLE
     }
   }, [location.pathname, routes])
   return <Fragment>

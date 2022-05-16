@@ -7,7 +7,7 @@ import { PageLoading } from '@ant-design/pro-layout';
 
 import App from './App'
 import './index.less'
-import routes from '@/routes';
+import routes, { LoginRoute, RootRoute, Page404Route, LayoutRoute } from '@/routes';
 import PermissionContext from './context/PermissionContext';
 import { getUserPermission } from './services/user';
 
@@ -35,7 +35,7 @@ root.render(
 )
 
 const constPermissionCodes = [
-  'Layout', 'Login', 'Page404',
+  LoginRoute.name, RootRoute.name, Page404Route.name, LayoutRoute.name,
 ]
 
 let filterRoutes: RouteItem[] = []
@@ -45,8 +45,8 @@ const main = async () => {
     const res = await getUserPermission()
     // 路由过滤
     filterRoutes = routeFilter(routes.current, [
-      ...res.data,
       ...constPermissionCodes,
+      ...res.data,
     ])
     root.render(
       <React.StrictMode>

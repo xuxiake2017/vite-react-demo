@@ -6,6 +6,7 @@ import { GithubFilled } from '@ant-design/icons';
 import styles from './index.module.less';
 import RouteContext from '@/context/RouteContext';
 import PermissionContext from '@/context/PermissionContext';
+import { LayoutRoute } from '@/routes';
 
 import type { MenuProps } from 'antd';
 import type { RouteItem } from '@/routes';
@@ -45,9 +46,12 @@ const BasicLayout: React.FC = (props) => {
 
   const { routes } = useContext(PermissionContext)
   const menuItems = useMemo(() => {
-    return getMenuItem(routes.find(route => route.name === 'Layout')?.children as RouteItem[])
+    return getMenuItem(LayoutRoute.children as RouteItem[])
   }, [routes])
   const matchRoute = useContext(RouteContext)
+  const breadcrumbRoutes = useMemo(() => {
+    return matchRoute.slice(1, matchRoute.length)
+  }, [matchRoute])
   const navigate = useNavigate()
   const [selectedKeys, setSelectedKeys] = useState<string[]>()
   const [openKeys, setOpenKeys] = useState<string[]>()
@@ -101,7 +105,7 @@ const BasicLayout: React.FC = (props) => {
         <Layout style={{ padding: '0 24px 24px' }}>
           <Breadcrumb style={{ margin: '16px 0' }}>
             {
-              matchRoute.map(route => (
+              breadcrumbRoutes.map(route => (
                 <Breadcrumb.Item
                   key={route.name}
                 >

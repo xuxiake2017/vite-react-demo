@@ -1,6 +1,6 @@
 # vite-react-demo
 
-一个使用`vite`、`react-router v6`的小demo，支持路由权限（路由过滤）
+一个使用`vite`、`react-router v6`的小demo，支持简易的路由权限（路由过滤）
 
 ## 开始
 
