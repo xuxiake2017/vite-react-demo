@@ -2,23 +2,29 @@ import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { Layout, Menu, Breadcrumb } from 'antd';
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { GithubFilled } from '@ant-design/icons';
+import * as icons from '@ant-design/icons';
 
 import styles from './index.module.less';
 import RouteContext from '@/context/RouteContext';
 import PermissionContext from '@/context/PermissionContext';
 import { LayoutRoute } from '@/routes';
+import RightContent from './components/RightContent';
 
 import type { MenuProps } from 'antd';
 import type { RouteItem } from '@/routes';
 
 const { Header, Content, Sider } = Layout;
+const Module = icons as any
 
 function getMenuItem(routes: RouteItem[]): MenuProps['items'] {
-  
   return routes.filter(route => !route.hideInMenu).map(route => {
+    let Component: React.ComponentType | undefined = undefined
+    if (route.icon) {
+      Component = Module[route.icon]
+    }
     return {
       key: route.name as string,
-      icon: route.icon,
+      icon: Component && <Component />,
       label: route.title,
       children: route.children ? getMenuItem(route.children) : undefined,
     }
@@ -46,7 +52,7 @@ const BasicLayout: React.FC = (props) => {
 
   const { routes } = useContext(PermissionContext)
   const menuItems = useMemo(() => {
-    return getMenuItem(LayoutRoute.children as RouteItem[])
+    return getMenuItem(routes.find(route => route.name === 'Layout')?.children as RouteItem[])
   }, [routes])
   const matchRoute = useContext(RouteContext)
   const breadcrumbRoutes = useMemo(() => {
@@ -82,6 +88,8 @@ const BasicLayout: React.FC = (props) => {
           />
           <span style={{ marginLeft: 15 }}>vite-react-demo</span>
         </div>
+        <RightContent
+        />
       </Header>
       <Layout>
         <Sider width={200}>

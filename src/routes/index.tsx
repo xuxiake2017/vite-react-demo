@@ -1,37 +1,36 @@
-import React from 'react';
-import {
-  SettingFilled,
-  HomeFilled,
-} from '@ant-design/icons';
-import { Outlet } from 'react-router-dom';
+// import React from 'react';
+// import {
+//   SettingFilled,
+//   HomeFilled,
+// } from '@ant-design/icons';
+// import { Outlet } from 'react-router-dom';
 
-import Login from '@/pages/Login';
-import Home from '@/pages/Home';
-import UserManager from '@/pages/System/UserManager';
-import RoleManager from '@/pages/System/RoleManager';
-import Page404 from '@/pages/Page404';
+// import Login from '@/pages/Login';
+// import Home from '@/pages/Home';
+// import UserManager from '@/pages/System/UserManager';
+// import RoleManager from '@/pages/System/RoleManager';
+// import Page404 from '@/pages/Page404';
 import {
   PAGE_NOT_FOUND_NAME,
   PAGE_NOT_FOUND_TITLE,
-  Layout,
+  // Layout,
 } from './constant';
 
 import type { RouteObject } from "react-router-dom";
-import type { ReactNode } from 'react';
+// import type { ReactNode } from 'react';
 
 export interface RouteItem extends RouteObject {
   title?: string;
   name: string;
-  icon?: ReactNode
+  element?: string
+  icon?: string
   children?: RouteItem[];
   redirect?: string;
   hideInMenu?: boolean;
 }
 
-
-
 export const LoginRoute: RouteItem = {
-  element: <Login />,
+  element: '@/pages/Login/index',
   path: "/login",
   title: '登录',
   name: 'Login',
@@ -39,18 +38,18 @@ export const LoginRoute: RouteItem = {
 export const RootRoute: RouteItem = {
   path: '/',
   name: 'Root',
-  redirect: '/Home',
+  redirect: '/home',
   title: 'Root',
 };
 export const Page404Route: RouteItem = {
   path: "/",
-  element: <Layout />,
+  element: 'LAYOUT',
   name: PAGE_NOT_FOUND_NAME,
   title: PAGE_NOT_FOUND_TITLE,
   children: [
     {
       path: '*',
-      element: <Page404 />,
+      element: '@/pages/Page404/index',
       name: PAGE_NOT_FOUND_NAME,
       title: PAGE_NOT_FOUND_TITLE,
       hideInMenu: true,
@@ -59,35 +58,34 @@ export const Page404Route: RouteItem = {
 }
 export const LayoutRoute: RouteItem = {
   path: "/",
-  element: <Layout />,
+  element: 'LAYOUT',
   name: 'Layout',
   title: 'Layout',
   children: [
     {
-      path: '/Home',
-      element: <Home />,
+      path: '/home',
+      element: '@/pages/Home/index',
       title: '首页',
       name: 'Home',
-      icon: <HomeFilled />,
+      icon: 'HomeFilled',
     },
     {
       path: '/system',
-      element: <Outlet />,
       title: '系统',
       name: 'System',
-      icon: <SettingFilled />,
+      icon: 'SettingFilled',
       redirect: '/system/userManager',
       children: [
         {
           index: true,
           path: '/system/userManager',
-          element: <UserManager />,
+          element: '@/pages/System/UserManager/index',
           title: '用户设置',
           name: 'UserManager',
         },
         {
           path: '/system/roleManager',
-          element: <RoleManager />,
+          element: '@/pages/System/RoleManager/index',
           title: '角色设置',
           name: 'RoleManager',
         },
@@ -96,15 +94,17 @@ export const LayoutRoute: RouteItem = {
   ],
 }
 
-export const routes: RouteItem[] = [
+export const basicRoutes: RouteItem[] = [
   LoginRoute,
   RootRoute,
-  LayoutRoute,
   Page404Route,
 ];
 
-const routesRef = {
-  current: routes
-}
+export const dynamicRoutes: RouteItem[] = [
+  LayoutRoute,
+];
 
-export default routesRef
+export const routes: RouteItem[] = [
+  ...basicRoutes,
+  ...dynamicRoutes,
+];

@@ -9,10 +9,13 @@
   },
   "dependencies": {
     "@ant-design/pro-layout": "^6.38.0",
+    "@reduxjs/toolkit": "^1.8.1",
+    "@vitejs/plugin-legacy": "^1.8.2",
     "antd": "^4.20.3",
     "path-to-regexp": "^6.2.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
+    "react-redux": "^8.0.1",
     "react-router-dom": "6",
     "umi-request": "^1.4.0"
   },
